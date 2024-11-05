@@ -70,8 +70,14 @@ public class BillingStatements {
         
         System.out.println("Enter Billing Statement Details:");
         
-        System.out.print("\nCustomer ID: ");
-        int c_id = scan.nextInt();
+        int c_id;
+        do {
+            System.out.print("\nCustomer ID: ");
+            c_id = scan.nextInt();
+            if (!conf.doesIDExist("customers", "c_id", c_id)) {
+                System.out.println("Customer ID Doesn't Exist.");
+            }
+        } while (!conf.doesIDExist("customers", "c_id", c_id));
         scan.nextLine();
         
         System.out.print("Billing Period: ");
@@ -120,8 +126,14 @@ public class BillingStatements {
         
         System.out.println("Enter Updated Billing Statement Details:");
         
-        System.out.print("\nNew Customer ID: ");
-        int c_id = scan.nextInt();
+        int c_id;
+        do {
+            System.out.print("\nCustomer ID: ");
+            c_id = scan.nextInt();
+            if (!conf.doesIDExist("customers", "c_id", c_id)) {
+                System.out.println("Customer ID Doesn't Exist.");
+            }
+        } while (!conf.doesIDExist("customers", "c_id", c_id));
         scan.nextLine();
         
         System.out.print("New Billing Period: ");
