@@ -24,7 +24,7 @@ public class BillingStatements {
                 switch (opt) {
                     case 1:
                         System.out.println("------------------------------------------------------------------");
-                        viewBillingStatements("SELECT * FROM tbl_billingstatements");
+                        viewBillingStatements();
                         break;
                     case 2:
                         System.out.println("------------------------------------------------------------------");
@@ -56,28 +56,32 @@ public class BillingStatements {
         } while (opt != 5);
     }
     
-    public void viewBillingStatements(String query) { 
+    public void viewBillingStatements() { 
         System.out.println("\n\t\t\t\t\t\t\t   === BILLING STATEMENTS LIST ===\n");
-       
-        String[] Headers = {"Billing ID", "Customer ID", "Billing Period", "Amount Due", "Due Date", "Status"};
-        String[] Columns = {"b_id", "c_id", "b_period", "b_due", "b_duedate", "b_status"};
+        
+        String query = "SELECT bill.b_id, cus.c_fname, bill.b_period, bill.b_due, bill.b_duedate, bill.b_status "
+                                    + "FROM tbl_billingstatements bill "
+                                    + "JOIN tbl_customers cus ON bill.c_id = cus.c_id";
+        
+        String[] Headers = {"Billing ID", "Customer Name", "Billing Period", "Amount Due", "Due Date", "Status"};
+        String[] Columns = {"b_id", "c_fname", "b_period", "b_due", "b_duedate", "b_status"};
         
         conf.viewRecords(query, Headers, Columns);
     }
 
     public void addBillingStatement(Scanner scan) {
-        System.out.println("\n\t\t=== ADD A NEW BILLING STATEMENT ===\n");
         
-        System.out.println("Enter Billing Statement Details:");
+        Customers customer = new Customers();
+        customer.viewCustomers("SELECT * FROM tbl_customers");
         
         int c_id;
         do {
             System.out.print("\nCustomer ID: ");
             c_id = scan.nextInt();
-            if (!conf.doesIDExist("customers", "c_id", c_id)) {
+            if (!conf.doesIDExist("tbl_customers", "c_id", c_id)) {
                 System.out.println("Customer ID Doesn't Exist.");
             }
-        } while (!conf.doesIDExist("customers", "c_id", c_id));
+        } while (!conf.doesIDExist("tbl_customers", "c_id", c_id));
         scan.nextLine();
         
         System.out.print("Billing Period: ");
@@ -101,6 +105,8 @@ public class BillingStatements {
     public void deleteBillingStatement(Scanner scan) {
         System.out.println("\n\t\t=== REMOVE A BILLING STATEMENT ===\n");
         
+        viewBillingStatements();
+        
         System.out.print("Enter Billing ID you want to delete: ");
         int b_id = scan.nextInt();
         
@@ -110,6 +116,8 @@ public class BillingStatements {
 
     public void editBillingStatement(Scanner scan) {
         System.out.println("\n\t\t=== EDIT A BILLING STATEMENT ===\n");
+        
+        viewBillingStatements();
         
         int b_id;
         do {
@@ -122,7 +130,6 @@ public class BillingStatements {
         scan.nextLine();
         
         System.out.println("Selected Record:");
-        viewBillingStatements("SELECT * FROM tbl_billingstatements WHERE b_id = " + b_id);
         
         System.out.println("Enter Updated Billing Statement Details:");
         
