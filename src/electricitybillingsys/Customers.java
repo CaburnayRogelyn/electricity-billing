@@ -90,6 +90,8 @@ public class Customers {
     public void deleteCustomer(Scanner scan){
         System.out.println("\n\t\t=== REMOVE A CUSTOMER ===\n");
         
+        viewCustomers("SELECT * FROM tbl_customers");
+        
         System.out.print("Enter Customer ID to delete: ");
         int id = scan.nextInt();
         
@@ -99,6 +101,8 @@ public class Customers {
 
     public void editCustomer(Scanner scan){
         System.out.println("\n\t\t=== EDIT A CUSTOMER ===\n");
+        
+        viewCustomers("SELECT * FROM tbl_customers");
         
         int id;
         do{
